@@ -67,6 +67,13 @@ const registerWithEmail = (e) => {
             .then((d)=> {
             console.log("🚀 ~ .then ~ d:", d)
 
+
+            addItemToLocalStorage({
+                Name: username,
+                Email: email,
+                Uid: userCredential.user.uid
+          })
+
             window.location.replace("/landing Page.html");
 
             })
@@ -124,7 +131,7 @@ const Account = async() => {
         username.value = '';
         email.value = '';
         password.value = '';
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
     }
 }
 
@@ -134,7 +141,7 @@ const payLoad = () => {
             
             console.log(user , ' User');
             alert("Your Account Has Been Created!");
-            window.location.href = "login.html";
+            window.location.href = "index.html";
 
         } else {
             console.log('User is Not logged In');
@@ -149,10 +156,35 @@ const signInWithGoogle = () => {
         
         console.log(result);
 
+        addDoc(collection(db, "users"), {
+            Name: result.user.displayName,
+            Email: result.user.email,
+            Uid: result.user.uid
+      })
+        .then((d)=> {
+        console.log("🚀 ~ .then ~ d:", d)
+
+
+        addItemToLocalStorage({
+            Name: result.user.displayName,
+            Email: result.user.email,
+            Uid: result.user.uid
+      })
+
+        window.location.replace("/landing Page.html");
+
+        })
+        .catch((err)=>{
+
+            console.log("🚀 ~ .then ~ e:", err)
+
+            alert(err);
+        })
+
     }).catch((error) => {
         
         console.log(error);
-    });
+    });
 }
 
 const signOutWithGoogle = () => {
@@ -204,11 +236,20 @@ loginWithApple.addEventListener("click" , signUpWithApple);
 
 
 
+function addItemToLocalStorage(userData) {
+
+    localStorage.setItem("userData", JSON.stringify(userData));
+
+}
 
 
+function checkAuth() {
+    const isUser = JSON.parse(localStorage.getItem("userData"));
+  
+    if(isUser) window.location.replace("/landing Page.html");
+}
 
-
-
+checkAuth()
 
 //?     Hide & Show Password Function 
 

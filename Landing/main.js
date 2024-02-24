@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, query, } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 
 const firebaseConfig = {
@@ -14,100 +14,92 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
+const fdb = getFirestore(app);
 const blogBut = document.querySelector('.blog-button');
-const loginBut = document.querySelector('.login-button');
 const logOutBut = document.querySelector('.logout-button');
-const question = document.querySelector('.question');
-const userCreds = JSON.parse(sessionStorage.getItem("user-creds"));
-const userInfo = JSON.parse(sessionStorage.getItem("user-info"));
+const qnaDataContainer = document.getElementById('qnaData');
+const isUser = JSON.parse(localStorage.getItem("userData"));
+
+if (!isUser) window.location.replace("/index.html");
 
 
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        
-        loginBut.style.display = 'none';
-        logOutBut.style.display = 'block';
+const renderBlogs = async () => {
+    qnaDataContainer.innerHTML = "";
 
-    } else {
-        loginBut.style.display = 'block';
-        logOutBut.style.display = 'none';
 
+    const q = query(collection(fdb, "blogs"));
+
+    const querySnapshot = await getDocs(q);
+    const blogs = []
+    querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        blogs.push(data);
+    });
+
+    if(!blogs.length){
+        const div = document.createElement("div");
+        div.innerHTML = `<p style="color:black;">No Blogs Found</p>`;
+        qnaDataContainer.appendChild(div);
+        return;
     }
-});
 
-// const payLoad = () => {
-//     onAuthStateChanged(auth, (user) => {
-//         if (user) {
-          
-//             console.log(user , ' User');
-//             // window.location.href = "landing Page.html";
+    blogs.reverse().forEach(data => {
+        const div = document.createElement("div");
+        div.setAttribute(
+            "class",
+            "question"
+        );
+        div.addEventListener('click', () => questionSection(data));
 
-//         } else {
-//             console.log('User is Not logged In');
-//             // window.location.href = "login.html";
-//         }
-//       });
-// }
+        div.innerHTML = `<div class="info-Data">
 
-// payLoad();
+          <div class="heading">
+              <h1>${data.title}</h1>
+          </div>
+  
+          <div class="description">
+              <p>${data.description}</p>
+          </div>
+  
+          <div class="admin-info">
+              <span class="admin-Name"><i class="fa-solid fa-user"></i> ${data?.username}</span>
+              <span class="issue-Date">${data?.date}</span>
+          </div>
+  
+      </div>
+  
+      <div class="image-Section-1">
+      </div>`
+
+
+        qnaDataContainer.appendChild(div);
+    })
+
+
+
+}
+
+renderBlogs()
 
 const blogSection = () => {
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            console.log(user , ' User');
-            window.location.href = "blog.html";
-
-        } else {
-            console.log('User is Not logged In');
-            window.location.href = "login.html";
-            
-
-        }
-      });
+    window.location.href = "blog.html";
 
 }
 
-// const signOutWithGoogle = () => {
-    
-//     signOut(auth).then(() => {
-//         // Sign-out successful.
-//       }).catch((error) => {
-//         // An error happened.
-//       });
-
-// }
-
-const loginSection = () => {
-    window.location.href = 'login.html';
-}
 
 const logOutSection = () => {
 
-    sessionStorage.removeItem("user-creds");
-    sessionStorage.removeItem("user-info");
-    window.location.href = "login.html";
-    
+    localStorage.removeItem("userData");
+    window.location.href = "index.html";
+
 }
 
-const questionSection = () => {
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            console.log(user , ' User');
-            window.location.href = "questionPage.html";
+const questionSection = (e) => {
+    localStorage.setItem("blog",JSON.stringify(e))
+    window.location.href = "questionPage.html";
 
-        } else {
-            console.log('User is Not logged In');
-            window.location.href = "login.html";
-            
-
-        }
-    });
 }
 
-loginBut.addEventListener('click' , loginSection);
-logOutBut.addEventListener('click' , logOutSection);
-blogBut.addEventListener('click' , blogSection);
-question.addEventListener('click' , questionSection);
+logOutBut.addEventListener('click', logOutSection);
+blogBut.addEventListener('click', blogSection);

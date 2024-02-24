@@ -130,7 +130,7 @@
     border-radius: 25px;
     border: 0;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-    display: none;
+    /* display: none; */
 }
 
 .main-Data {
