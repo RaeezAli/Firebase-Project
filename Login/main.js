@@ -24,7 +24,7 @@ const fdb = getFirestore(app);
 const dbref = ref(db);
 const loginWithGoogle = document.querySelector(".login-google-button");
 const signUp = document.querySelector("#signUp");
-const login = document.getElementById("login-button");
+// const login = document.getElementById("login-button");
 
 const loginForm = document.querySelector("form");
 
@@ -122,7 +122,7 @@ const loginWithGoogleFunction = () => {
         }).catch((error) => {
 
             console.log(error);
-        });
+        });
 }
 
 const signUpSection = () => {

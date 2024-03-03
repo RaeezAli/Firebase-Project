@@ -34,6 +34,8 @@ const { title,
   email,
   uid } = JSON.parse(localStorage.getItem("blog"));
 
+const userData = JSON.parse(localStorage.getItem("userData"));
+
 document.getElementById("title").innerHTML = title;
 document.getElementById("description").innerHTML = description;
 document.getElementById("name").innerHTML = username;
@@ -87,9 +89,9 @@ const addComment = () => {
 
   addDoc(collection(db, "comments"), {
     text: para,
-    email,
+    email: userData.Email,
     blogId: uid,
-    username
+    username: userData.Name
   })
     .then(() => {
 
@@ -100,7 +102,7 @@ const addComment = () => {
       let anotherComment = document.querySelector("#comment-Section");
       anotherComment.appendChild(margin);
 
-      anotherComment.innerHTML += `<div class="display"><div class="avatar placeholder image"><div class="bg-neutral text-neutral-content rounded-full w-12"><span>${username.charAt(0)}</span></div></div><div class="comment"><p>${email}</p><p>${para}</p></div></div>`;
+      anotherComment.innerHTML += `<div class="display"><div class="avatar placeholder image"><div class="bg-neutral text-neutral-content rounded-full w-12"><span>${userData.Name.charAt(0)}</span></div></div><div class="comment"><p>${userData.Email}</p><p>${para}</p></div></div>`;
 
       comment.value = '';
       submitBut.innerHTML = "Submit";

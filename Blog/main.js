@@ -50,7 +50,7 @@ const getCurrentDate = () => {
   return formattedDate
 }
 
-function generateUserId() {
+function generateBlogId() {
   // Generate a timestamp
   var timestamp = new Date().getTime();
 
@@ -107,7 +107,7 @@ const handleBlogCreate = () => {
   const date = getCurrentDate();
 
   const { Email: email, Name: username } = JSON.parse(localStorage.getItem("userData"));
-  const uid = generateUserId();
+  const uid = generateBlogId();
 
 
   const blogData = {
