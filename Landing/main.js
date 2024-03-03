@@ -91,9 +91,6 @@ renderBlogs();
 const handleSearch = (event) => {
     const value = event.target.value.toLowerCase();
 
-    // if (!value.trim()) return;
-
-
     const filteredItems = allBlogs.filter(e => e.title.toLowerCase().includes(value));
 
     qnaDataContainer.innerHTML = "";
