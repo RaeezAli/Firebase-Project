@@ -129,7 +129,7 @@ const handleBlogCreate = () => {
       console.log("🚀 ~ .then ~ d:", d)
 
 
-      window.location.replace("/landing Page.html");
+      window.location.replace("/landing.html");
 
     })
     .catch((err) => {
@@ -141,6 +141,6 @@ const handleBlogCreate = () => {
 
 }
 
-cancleBtn.addEventListener("click", () => window.location.replace("/landing Page.html"));
+cancleBtn.addEventListener("click", () => window.location.replace("/landing.html"));
 logOutBut.addEventListener("click", loginSection);
 saveBtn.addEventListener("click", handleBlogCreate)

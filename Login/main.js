@@ -70,7 +70,7 @@ const signInWithEmail = (email, password) => {
 
 
 
-            window.location.replace(`/landing Page.html`);
+            window.location.replace(`/landing.html`);
 
             // set(child(dbref, "UsersList/" + userCredential.user.uid).then((snapshot)=>{
             //     if(snapshot.exists){
@@ -81,7 +81,7 @@ const signInWithEmail = (email, password) => {
             //         sessionStorage.setItem("user-creds", JSON.stringify(userCredential.user));
             //     }
             // }))
-            // window.location.href = "landing Page.html";
+            // window.location.href = "landing.html";
         })
         .catch((error) => {
             console.log("🚀 ~ signInWithEmail ~ error:", error)
@@ -117,7 +117,7 @@ const loginWithGoogleFunction = () => {
 
 
 
-            window.location.replace("/landing Page.html");
+            window.location.replace("/landing.html");
 
         }).catch((error) => {
 
@@ -170,7 +170,7 @@ function addItemToLocalStorage(userData) {
 function checkAuth() {
     const isUser = JSON.parse(localStorage.getItem("userData"));
   
-    if(isUser) window.location.replace("/landing Page.html");
+    if(isUser) window.location.replace("/landing.html");
 }
 
 checkAuth()
